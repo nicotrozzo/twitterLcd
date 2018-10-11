@@ -3,16 +3,14 @@
 #include <curl/curl.h>
 #include <exception>
 #include <vector>
-#include "json.hpp"
 
 using namespace std;
-using json = nlohmann::json;
 
 class twUser
 {
 public:
 	twUser();
-	bool getTwits(int cant);
+	bool getTwits(const char *user,unsigned int cant = 0);
 	void parseTwits();
 	~twUser();
 
@@ -22,9 +20,9 @@ private:
 	CURLcode res;
 	string token;
 	string query;
-	string API_Key;
-	string API_secretKey;
-	json twJson;
+	string API_key;
+	string API_SecretKey;
+	string readString;
 	int stillRunning;
 };
 
