@@ -8,3 +8,11 @@ public:
 
 #include "basicLCD.h"
 
+class twLcd
+{
+public:
+	twLcd();
+	~twLcd();
+private:
+
+};
