@@ -26,3 +26,11 @@ private:
 
 
 
+class twLcd
+{
+public:
+	twLcd();
+	~twLcd();
+private:
+
+};
