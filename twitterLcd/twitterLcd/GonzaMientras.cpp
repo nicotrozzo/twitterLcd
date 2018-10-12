@@ -2,5 +2,13 @@
 
 void twLcd :: showNextTwit()
 {
-	twittIndex++;
+	twitIndex++;
+	tickCount = 0;
+	currentTwit = list[twitIndex].text;
+	currentTwitData = list[twitIndex].data;
+}
+
+void twLcd::showPreviousTwit()
+{
+
 }

@@ -17,7 +17,7 @@ public:
 	twLcd(basicLCD * dispPointer);
 	void showNextTwit();
 	void showAgain();
-	void showPrevious();
+	void showPreviousTwit();
 	void incSpeed();
 	void decSpeed();
 	bool update();
