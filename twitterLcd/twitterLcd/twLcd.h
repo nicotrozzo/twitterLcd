@@ -14,7 +14,7 @@ typedef struct
 class twLcd
 {
 public:
-	twLcd(basicLCD * dispPointer);
+	twLcd(basicLCD * dispPointer,);
 	void showNextTwit();
 	void showAgain();
 	void showPreviousTwit();
@@ -29,9 +29,11 @@ private:
 	string currentTwit;
 	string currentTwitData;
 	string textSendToDisplay;
-	string username;
+	string userName;
 	basicLCD * lcd;
 	vector<twit>& list;
 	unsigned int twitIndex;
 	unsigned int offsetString;
+	void showTwit();
+	unsigned char totalTwits;
 };
