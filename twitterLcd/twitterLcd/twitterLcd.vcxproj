@@ -116,6 +116,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mientrasTanto.cpp" />
     <ClCompile Include="twLcd.cpp" />
     <ClCompile Include="twUser.cpp" />
   </ItemGroup>

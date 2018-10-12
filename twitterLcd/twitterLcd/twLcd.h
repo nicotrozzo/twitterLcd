@@ -2,10 +2,19 @@
 #include "basicLCD.h"
 #include <vector>
 #include <string>
+
+using namespace std;
+
+typedef struct
+{
+	string text;
+	string data;
+}twit;
+
 class twLcd
 {
 public:
-	twLcd();
+	twLcd(basicLCD * dispPointer);
 	void showNextTwit();
 	void showAgain();
 	void showPrevious();
@@ -17,20 +26,9 @@ public:
 private:
 	unsigned char tickCount;
 	unsigned char currentSpeed;
-	std::string currentTwit;
-	std::string currentTwitInfo;
+	string currentTwit;
+	string currentTwitInfo;
 	basicLCD * lcd;
-	vector<> &list;
-	unsigned int currentTwit;
-};
-
-
-
-class twLcd
-{
-public:
-	twLcd();
-	~twLcd();
-private:
-
+	vector<twit> & list;
+	unsigned int twitIndex;
 };
