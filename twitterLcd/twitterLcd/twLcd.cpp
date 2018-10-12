@@ -5,9 +5,11 @@
 
 twLcd::twLcd()
 {
+
 }
 
 
 twLcd::~twLcd()
 {
+
 }

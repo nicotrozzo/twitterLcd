@@ -98,4 +98,5 @@ void twUser::parseTwits(void)
 
 twUser::~twUser()
 {
+
 }
