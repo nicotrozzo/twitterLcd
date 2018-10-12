@@ -34,4 +34,5 @@ private:
 	vector<twit> & list;
 	unsigned int twitIndex;
 	unsigned int offsetString;
+	void showTwit();
 };
