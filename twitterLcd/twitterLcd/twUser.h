@@ -6,7 +6,7 @@
 
 using namespace std;
 
-typedef enum{NO_TW_ERR,CURL_START_ERR,TOKEN_ACCESS_ERR,CURL_EASY_PERF_ERR,}twErrType;
+typedef enum{NO_TW_ERR,CURL_START_ERR,TOKEN_ACCESS_ERR,CURL_EASY_PERF_ERR,NO_ELEMENT_TEXT}twErrType;
 
 typedef struct
 {
@@ -18,7 +18,11 @@ class twUser
 {
 public:
 	twUser();
-	bool getTwits(const char *user,unsigned int cant = 0);
+	/*getTwits:
+	Recibe cantidad de twits para solicitar al servidor
+	En caso de recibir 0, se pide la cantidad por defecto que envie el servidor
+	ATENCION: no bloqueante, llamar hasta que devuelva 0 para que reciba todo*/
+	int getTwits(const char *user,unsigned int cant = 0);
 	void parseTwits();
 	twUserError getErr();
 	~twUser();
@@ -28,12 +32,11 @@ private:
 	CURLM * multihandle;
 	CURLcode res;
 	string token;
-	string query;
-	string API_key;
-	string API_SecretKey;
 	string readString;
 	int stillRunning;
 	twUserError err;
+	void setUpMulti();
+	vector<twit>twits;
 };
 
  
