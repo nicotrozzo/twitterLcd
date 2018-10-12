@@ -8,8 +8,8 @@ using json = nlohmann::json;
 
 twUser::twUser()
 {
-	API_key = API_KEY;
-	API_SecretKey = API_SKEY;
+	string API_key = API_KEY;
+	string API_SecretKey = API_SKEY;
 	curl = curl_easy_init();
 	if (curl)
 	{
@@ -66,6 +66,7 @@ twUser::twUser()
 				//Tratamos de acceder al campo acces_token del JSON
 				std::string aux = answer["access_token"];
 				token = aux;
+				setUpMulti();	//pide ahora todos los twits de forma no bloqueante
 			}
 			catch (std::exception& e)
 			{
@@ -84,18 +85,73 @@ twUser::twUser()
 
 /*getTwits:
 Recibe cantidad de twits para solicitar al servidor
-En caso de recibir 0, se pide la cantidad por defecto que envie el servidor*/
-bool twUser::getTwits(const char *user,unsigned int cant)
+En caso de recibir 0, se pide la cantidad por defecto que envie el servidor
+ATENCION: no bloqueante, llamar hasta que devuelva 0 para que reciba todo*/
+int twUser::getTwits(const char *user,unsigned int cant)
 {
-	//query = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=lanacion&count=10";
+	if (stillRunning)
+	{
+		curl_multi_perform(multiHandle, &stillRunning);
+	}
+	return stillRunning;
+}
 
+void twUser::setUpMulti()
+{
+	stillRunning = 0;
+	curl = curl_easy_init();
+	multiHandle = curl_multi_init();
+	readString = "";
+	string query = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=" + user + "&count=" + to_string(cant);
+	if ((curl != NULL) & (multiHandle != NULL))
+	{
+		//Attacheo el easy handle para manejar una coneccion no bloqueante.
+		curl_multi_add_handle(multiHandle, curl);
+
+		curl_easy_setopt(curl, CURLOPT_URL, query.c_str());
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+		curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+
+		//Construimos el Header de autenticacion como lo especifica la API
+		//usando el token que obtuvimos antes
+		struct curl_slist *list = NULL;
+		string aux = "Authorization: Bearer ";
+		aux = aux + token;
+		list = curl_slist_append(list, aux.c_str());
+		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, list);
+
+		//Seteamos los callback igual que antes
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, myCallback);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readString);
+
+		//Realizamos ahora un perform no bloqueante
+		curl_multi_perform(multiHandle, &stillRunning);
+	}
 }
 
 void twUser::parseTwits(void)
 {
-
+	curl_easy_cleanup(curl);
+	json j = json::parse(readString);
+	try
+	{
+		twit temp;
+		//Al ser el JSON un arreglo de objetos JSON se busca el campo text para cada elemento
+		for (auto element : j)
+		{
+			temp.text = element["text"];
+			temp.data = element[];
+			twit.push_back(temp);
+		}
+	}
+	catch (std::exception& e)
+	{
+		//Error interno si hubo un error de la libreria
+		err.detail = e.what();
+		err.type = NO_ELEMENT_TEXT;
+	}
 }
-
+	
 twUser::~twUser()
 {
 
