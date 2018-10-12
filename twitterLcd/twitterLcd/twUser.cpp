@@ -1,12 +1,13 @@
 #include "twUser.h"
 #include "json.hpp"
+#include <string>
 
 using json = nlohmann::json;
 
 #define API_KEY "HCB39Q15wIoH61KIkY5faRDf6"
 #define API_SKEY "7s8uvgQnJqjJDqA6JsLIFp90FcOaoR5Ic41LWyHOic0Ht3SRJ6"
 
-twUser::twUser()
+twUser::twUser(const char *user, unsigned int cant)
 {
 	string API_key = API_KEY;
 	string API_SecretKey = API_SKEY;
@@ -50,7 +51,7 @@ twUser::twUser()
 			err.type = CURL_EASY_PERF_ERR;
 			err.detail = "curl_easy_perform() failed: " + curl_easy_strerror(res);
 			//Hacemos un clean up de curl antes de salir.
-			curl_easy_cleanup(curl)
+			curl_easy_cleanup(curl);
 		}
 		else
 		{
@@ -66,7 +67,7 @@ twUser::twUser()
 				//Tratamos de acceder al campo acces_token del JSON
 				std::string aux = answer["access_token"];
 				token = aux;
-				setUpMulti();	//pide ahora todos los twits de forma no bloqueante
+				setUpMulti(user,cant);	//pide ahora todos los twits de forma no bloqueante
 			}
 			catch (std::exception& e)
 			{
@@ -87,7 +88,7 @@ twUser::twUser()
 Recibe cantidad de twits para solicitar al servidor
 En caso de recibir 0, se pide la cantidad por defecto que envie el servidor
 ATENCION: no bloqueante, llamar hasta que devuelva 0 para que reciba todo*/
-int twUser::getTwits(const char *user,unsigned int cant)
+int twUser::getTwits()
 {
 	if (stillRunning)
 	{
@@ -96,13 +97,19 @@ int twUser::getTwits(const char *user,unsigned int cant)
 	return stillRunning;
 }
 
-void twUser::setUpMulti()
+void twUser::setUpMulti(const char *user, unsigned int cant)
 {
 	stillRunning = 0;
 	curl = curl_easy_init();
 	multiHandle = curl_multi_init();
 	readString = "";
-	string query = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=" + user + "&count=" + to_string(cant);
+	string query = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=";
+	query += user;
+	
+	if (cant != 0)	//si mandaron 0, no especifica cantidad de twits
+	{
+		query += "&count=" + to_string(cant);
+	}
 	if ((curl != NULL) & (multiHandle != NULL))
 	{
 		//Attacheo el easy handle para manejar una coneccion no bloqueante.
@@ -139,10 +146,11 @@ void twUser::parseTwits(void)
 		//Al ser el JSON un arreglo de objetos JSON se busca el campo text para cada elemento
 		for (auto element : j)
 		{
-			temp.text = element["text"];
-			temp.data = element[];
-			twit.push_back(temp);
+			temp.text = static_cast<string>(element["text"]);
+			temp.data = static_cast<string>(element["created_at"]);
+			twits.push_back(temp);
 		}
+		getchar();
 	}
 	catch (std::exception& e)
 	{
@@ -155,4 +163,21 @@ void twUser::parseTwits(void)
 twUser::~twUser()
 {
 
+
+}
+
+//Concatena lo recibido en content a s
+size_t twUser::myCallback(void *contents, size_t size, size_t nmemb, void *userp)
+{
+	size_t realsize = size * nmemb;
+	char* data = (char *)contents;
+	//fprintf(stdout, "%s",data);
+	std::string* s = (std::string*)userp;
+	s->append(data, realsize);
+	return realsize;						//recordar siempre devolver realsize
+}
+
+twUserError twUser::getError()
+{
+	return err;
 }

@@ -14,29 +14,34 @@ typedef struct
 	twErrType type;
 }twUserError;
 
+typedef struct
+{
+	string text;
+	string data;
+}twit;
+
 class twUser
 {
 public:
-	twUser();
+	/*Recibe como primer parametro el usuario al que le debe solicitar los twits y
+	como segundo parametro la cantidad de twits.*/
+	twUser(const char *user, unsigned int cant = 0);
 	/*getTwits:
-	Recibe cantidad de twits para solicitar al servidor
-	En caso de recibir 0, se pide la cantidad por defecto que envie el servidor
-	ATENCION: no bloqueante, llamar hasta que devuelva 0 para que reciba todo*/
-	int getTwits(const char *user,unsigned int cant = 0);
+	No bloqueante, llamar hasta que devuelva 0 para que reciba todo*/
+	int getTwits();
 	void parseTwits();
-	twUserError getErr();
+	twUserError getError();
 	~twUser();
 
 private:
 	CURL * curl;
-	CURLM * multihandle;
+	CURLM * multiHandle;
 	CURLcode res;
 	string token;
 	string readString;
 	int stillRunning;
 	twUserError err;
-	void setUpMulti();
 	vector<twit>twits;
+	void setUpMulti(const char *user, unsigned int cant);
+	size_t myCallback(void *contents, size_t size, size_t nmemb, void *userp);
 };
-
- 
