@@ -9,6 +9,7 @@ twLcd::twLcd(basicLCD* dispPointer)
 	currentSpeed = DEFAULT_SPEED;
 	tickCount = 0;
 	lcd = dispPointer;
+	twitIndex = 0;
 
 }
 

@@ -28,10 +28,10 @@ private:
 	unsigned char currentSpeed;
 	string currentTwit;
 	string currentTwitData;
-	string currentTwitInfo;
 	string textSendToDisplay;
+	string username;
 	basicLCD * lcd;
-	vector<twit> & list;
+	vector<twit>& list;
 	unsigned int twitIndex;
 	unsigned int offsetString;
 };
