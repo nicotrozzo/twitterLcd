@@ -27,8 +27,11 @@ private:
 	unsigned char tickCount;
 	unsigned char currentSpeed;
 	string currentTwit;
+	string currentTwitData;
 	string currentTwitInfo;
+	string textSendToDisplay;
 	basicLCD * lcd;
 	vector<twit> & list;
 	unsigned int twitIndex;
+	unsigned int offsetString;
 };

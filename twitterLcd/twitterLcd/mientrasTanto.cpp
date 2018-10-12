@@ -4,7 +4,7 @@
 #define MIN_SPEED	1
 #define DEFAULT_SPEED 3
 
-twLcd::twLcd(basicLCD* dispPointer)
+twLcd::twLcd(basicLCD* dispPointer,)
 {
 	currentSpeed = DEFAULT_SPEED;
 	tickCount = 0;
