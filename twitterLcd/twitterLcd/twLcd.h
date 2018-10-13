@@ -36,5 +36,6 @@ private:
 	unsigned int offsetString;
 	void showTwit();
 	unsigned char totalTwits;
-	void parser();
+	void parseText();
+	void parseData();
 };

@@ -11,7 +11,7 @@ twLcd::twLcd(basicLCD* dispPointer, unsigned char totalTwits_, vector<twit> list
 	lcd = dispPointer;
 	totalTwits = totalTwits_;
 	list = list_;
-	parser();							//falta parsear fecha y hora
+	parseText();							//falta parsear fecha y hora
 
 	twitIndex = 0;
 	showAgain();
@@ -73,7 +73,7 @@ void twLcd::showTwit()
 	(*lcd) << currentTwit.c_str();
 }
 
-void twLcd::parser()
+void twLcd::parseText()
 {
 	for (unsigned char i = 0; i < totalTwits; i++)
 	{
@@ -144,6 +144,11 @@ void twLcd::parser()
 			}
 		}
 	}
+}
+
+void twLcd::parseData()
+{
+
 }
 
 twLcd::~twLcd()
