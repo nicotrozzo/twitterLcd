@@ -96,7 +96,7 @@
       <AdditionalIncludeDirectories>"C:\Users\Emilia\source\repos\curl\builds\libcurl-vc-x64-release-dll-ipv6-sspi-winssl\include"</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>"C:\Users\Emilia\source\repos\curl\builds\libcurl-vc-x64-release-dll-ipv6-sspi-winssl\lib\libcurl.lib";%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>"C:\Users\Emilia\source\repos\curl\builds\libcurl-vc-x64-release-dll-ipv6-sspi-winssl\lib\libcurl.lib";C:\Users\fliatondi\source\repos\Project1\Project1\Additional Libraries\curses.lib;C:\Users\fliatondi\source\repos\Project1\Project1\Additional Libraries\panel.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -128,12 +128,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="events.cpp" />
     <ClCompile Include="GonzaMientras.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="twLcd.cpp" />
     <ClCompile Include="twUser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="events.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="twLcd.h" />
     <ClInclude Include="twUser.h" />
@@ -144,11 +146,15 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\boost.1.68.0.0\build\boost.targets" Condition="Exists('..\packages\boost.1.68.0.0\build\boost.targets')" />
+    <Import Project="..\packages\PDCurses34.redist.3.4.0.1\build\native\PDCurses34.redist.targets" Condition="Exists('..\packages\PDCurses34.redist.3.4.0.1\build\native\PDCurses34.redist.targets')" />
+    <Import Project="..\packages\PDCurses34.3.4.0.1\build\native\PDCurses34.targets" Condition="Exists('..\packages\PDCurses34.3.4.0.1\build\native\PDCurses34.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Use la restauración de paquetes NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\boost.1.68.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.68.0.0\build\boost.targets'))" />
+    <Error Condition="!Exists('..\packages\PDCurses34.redist.3.4.0.1\build\native\PDCurses34.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PDCurses34.redist.3.4.0.1\build\native\PDCurses34.redist.targets'))" />
+    <Error Condition="!Exists('..\packages\PDCurses34.3.4.0.1\build\native\PDCurses34.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PDCurses34.3.4.0.1\build\native\PDCurses34.targets'))" />
   </Target>
 </Project>

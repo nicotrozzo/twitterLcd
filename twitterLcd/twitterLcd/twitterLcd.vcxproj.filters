@@ -5,11 +5,13 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="twLcd.cpp" />
     <ClCompile Include="twUser.cpp" />
+    <ClCompile Include="events.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp" />
     <ClInclude Include="twLcd.h" />
     <ClInclude Include="twUser.h" />
+    <ClInclude Include="events.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
