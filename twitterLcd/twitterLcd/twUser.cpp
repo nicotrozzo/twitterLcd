@@ -153,9 +153,12 @@ void twUser::parseTwits(void)
 			for (auto element : j)
 			{
 				temp.text = element["text"];
+				int extended = temp.text.find("https");	
+				temp.text = temp.text.substr(0, extended);	//elimina la URL al final de los twits
 				temp.data = element["created_at"];
 				twits.push_back(temp);
 			}
+
 			getchar();
 		}
 		catch (std::exception& e)

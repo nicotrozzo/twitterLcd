@@ -11,4 +11,7 @@
     <ClInclude Include="twLcd.h" />
     <ClInclude Include="twUser.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>
