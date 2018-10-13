@@ -6,7 +6,7 @@
 
 using namespace std;
 
-typedef enum{NO_TW_ERR,CURL_START_ERR,TOKEN_ACCESS_ERR,CURL_EASY_PERF_ERR,NO_ELEMENT_TEXT,INEXISTING_USER,NO_TWITS}twErrType;
+typedef enum{NO_TW_ERR,CURL_START_ERR,TOKEN_ACCESS_ERR,CURL_EASY_PERF_ERR,NO_ELEMENT_TEXT,NONEXISTING_USER,NO_TWITS,UNEXPECTED_JSON}twErrType;
 
 typedef struct
 {
@@ -29,7 +29,6 @@ public:
 	/*getTwits:
 	No bloqueante, llamar hasta que devuelva 0 para que reciba todo*/
 	int getTwits();
-	void parseTwits();
 	twUserError getError();
 	vector<twit> getTwitList();
 	~twUser();
@@ -44,5 +43,6 @@ private:
 	twUserError err;
 	vector<twit>twits;
 	void setUpMulti(const char *user, unsigned int cant);
+	void parseTwits();
 };
 

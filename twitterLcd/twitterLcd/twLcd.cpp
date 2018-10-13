@@ -3,6 +3,7 @@
 #define MAX_SPEED	5
 #define MIN_SPEED	1
 #define DEFAULT_SPEED 3
+#define MAX_LINE_SIZE	16
 
 twLcd::twLcd(basicLCD* dispPointer, unsigned char totalTwits_, vector<twit> list_)
 {
@@ -64,13 +65,43 @@ void twLcd::closeLcd()
 
 void twLcd::showTwit()
 {
-	tickCount = 0;								//Reinicia el timer
+	tickCount = 0;	//Reinicia el timer
+	offsetString = 0;
 	currentTwit = userName + ": - " + list[twitIndex].text + ' ';
 	currentTwitData = list[twitIndex].data;
 	lcd->lcdClear();
 	(*lcd) << currentTwitData.c_str();
 	lcd->lcdSetCursorPosition({ 2,1 });			//Llevo cursor a la posicion 1 de el segundo renglon
-	(*lcd) << currentTwit.c_str();
+	(*lcd) << currentTwit.substr(offsetString,offsetString+MAX_LINE_SIZE).c_str();
+}
+
+bool twLcd::update()
+{
+	if (tickCount == currentSpeed)
+	{
+		if (currentTwit.size() != offsetString)
+		{
+			offsetString++;
+			lcd->lcdSetCursorPosition({ 2,1 });
+			lcd->lcdClearToEOL();
+			if ((currentTwit.size() - offsetString) <= MAX_LINE_SIZE)
+			{
+				(*lcd) << currentTwit.substr(offsetString, currentTwit.size()).c_str();
+			}
+			else
+			{
+				(*lcd) << currentTwit.substr(offsetString, offsetString + MAX_LINE_SIZE).c_str();
+			}
+		}
+		else
+		{
+			showNextTwit();
+		}
+	}
+	else
+	{
+		tickCount++;
+	}
 }
 
 void twLcd::parseText()
