@@ -8,9 +8,13 @@ int main(int argc,char *argv[])
 {
 	cmdLineParser(argc, argv);
 	twUser user(argv[1], atoi(argv[2]));
+
 	if (user.getError().type == NO_TW_ERR)
 	{
-		user.getTwits();
+		while (user.getTwits() != 0)
+		{
+			//dibujar en el lcd algo para que se vea que no se colgo
+		}
 		
 	}
 }

@@ -97,6 +97,10 @@ int twUser::getTwits()
 	if (stillRunning)
 	{
 		curl_multi_perform(multiHandle, &stillRunning);
+		if (!stillRunning)	//si termino de recibir, parsea el JSON recibido
+		{
+			parseTwits();
+		}
 	}
 	return stillRunning;
 }
@@ -144,11 +148,11 @@ void twUser::parseTwits(void)
 {
 	curl_easy_cleanup(curl);
 	json j = json::parse(readString);
-	if (jsonvacio)
+	try
 	{
-		try
+		if(j.type() == json::value_t::array)
 		{
-			if (j["errors"][0]["code"] != NOT_A_USER)
+			if (!j.empty())
 			{
 				twit temp;
 				//Al ser el JSON un arreglo de objetos JSON se busca el campo text para cada elemento
@@ -163,22 +167,34 @@ void twUser::parseTwits(void)
 			}
 			else
 			{
-				err.type = INEXISTING_USER;
+				err.type = NO_TWITS;
+				err.detail = "The requested account has no twits";
+			}
+		}
+		else if(j.type() == json::value_t::object)
+		{
+			if (j["errors"][0]["code"] == NOT_A_USER)
+			{
+				err.type = NONEXISTING_USER;
 				err.detail = j["errors"][0]["message"];
 			}
-			getchar();
+			else
+			{
+				err.type = UNEXPECTED_JSON;
+				err.detail = "Unexpected response from server";
+			}
 		}
-		catch (std::exception& e)
+		else
 		{
-			//Error interno si hubo un error de la libreria
-			err.detail = e.what();
-			err.type = NO_ELEMENT_TEXT;
+			err.type = UNEXPECTED_JSON;
+			err.detail = "Unexpected response from server";
 		}
 	}
-	else
+	catch (std::exception& e)
 	{
-		err.type = NO_TWITS;
-		err.detail = "The requested account has no twits";
+		//Error interno si hubo un error de la libreria
+		err.detail = e.what();
+		err.type = NO_ELEMENT_TEXT;
 	}
 }
 	
