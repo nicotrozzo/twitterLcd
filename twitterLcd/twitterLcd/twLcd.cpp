@@ -22,7 +22,7 @@ void twLcd::showNextTwit()
 {
 	if (twitIndex < totalTwits)
 	{
-		twitIndex++;								//aumento el twit por el que vamos
+		twitIndex++;							//aumento el twit por el que vamos
 	}
 	showTwit();
 }
@@ -148,7 +148,8 @@ void twLcd::parseText()
 
 void twLcd::parseData()
 {
-
+	struct tm data;				//NO SE COMO SE HACE
+	put_time(&data, "%D");
 }
 
 twLcd::~twLcd()
