@@ -144,21 +144,28 @@ void twUser::parseTwits(void)
 {
 	curl_easy_cleanup(curl);
 	json j = json::parse(readString);
-	if (j["errors"][0]["code"] != NOT_A_USER)
+	if (jsonvacio)
 	{
 		try
 		{
-			twit temp;
-			//Al ser el JSON un arreglo de objetos JSON se busca el campo text para cada elemento
-			for (auto element : j)
+			if (j["errors"][0]["code"] != NOT_A_USER)
 			{
-				temp.text = element["text"];
-				int extended = temp.text.find("https");	
-				temp.text = temp.text.substr(0, extended);	//elimina la URL al final de los twits
-				temp.data = element["created_at"];
-				twits.push_back(temp);
+				twit temp;
+				//Al ser el JSON un arreglo de objetos JSON se busca el campo text para cada elemento
+				for (auto element : j)
+				{
+					temp.text = element["text"];
+					int extended = temp.text.find("https");
+					temp.text = temp.text.substr(0, extended);	//elimina la URL al final de los twits
+					temp.data = element["created_at"];
+					twits.push_back(temp);
+				}
 			}
-
+			else
+			{
+				err.type = INEXISTING_USER;
+				err.detail = j["errors"][0]["message"];
+			}
 			getchar();
 		}
 		catch (std::exception& e)
@@ -170,8 +177,8 @@ void twUser::parseTwits(void)
 	}
 	else
 	{
-		err.type = INEXISTING_USER;
-		err.detail = j["errors"][0]["message"];
+		err.type = NO_TWITS;
+		err.detail = "The requested account has no twits";
 	}
 }
 	
