@@ -28,12 +28,11 @@ private:
 	unsigned char currentSpeed;
 	string currentTwit;
 	string currentTwitData;
-	string textSendToDisplay;
 	string userName;
 	basicLCD * lcd;
 	vector<twit> list;
 	unsigned int twitIndex;
-	unsigned int offsetString;
+	size_t offsetString;
 	void showTwit();
 	unsigned char totalTwits;
 	void parseText();
