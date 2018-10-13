@@ -72,7 +72,7 @@ void twLcd::showTwit()
 	lcd->lcdClear();
 	(*lcd) << currentTwitData.c_str();
 	lcd->lcdSetCursorPosition({ 2,1 });			//Llevo cursor a la posicion 1 de el segundo renglon
-	(*lcd) << currentTwit.c_str();
+	(*lcd) << currentTwit.substr(offsetString,offsetString+MAX_LINE_SIZE).c_str();
 }
 
 bool twLcd::update()
