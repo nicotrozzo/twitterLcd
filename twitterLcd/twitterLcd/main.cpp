@@ -11,6 +11,7 @@ int main(int argc,char *argv[])
 	if (user.getError().type == NO_TW_ERR)
 	{
 		user.getTwits();
+		
 	}
 }
 

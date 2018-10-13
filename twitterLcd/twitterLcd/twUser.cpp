@@ -199,6 +199,11 @@ static size_t myCallback(void *contents, size_t size, size_t nmemb, void *userp)
 	return realsize;						//recordar siempre devolver realsize
 }
 
+vector<twit> twUser::getTwitList()
+{
+	return twits;
+}
+
 twUserError twUser::getError()
 {
 	return err;

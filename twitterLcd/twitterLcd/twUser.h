@@ -31,6 +31,7 @@ public:
 	int getTwits();
 	void parseTwits();
 	twUserError getError();
+	vector<twit> getTwitList();
 	~twUser();
 
 private:
