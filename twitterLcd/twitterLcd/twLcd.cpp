@@ -4,12 +4,13 @@
 #define MIN_SPEED	1
 #define DEFAULT_SPEED 3
 
-twLcd::twLcd(basicLCD* dispPointer, unsigned char totalTwits_)
+twLcd::twLcd(basicLCD* dispPointer, unsigned char totalTwits_, vector<twit> list_)
 {
 	currentSpeed = DEFAULT_SPEED;
 	tickCount = 0;
 	lcd = dispPointer;
 	totalTwits = totalTwits_;
+	list = list_;
 	parser();							//falta parsear fecha y hora
 
 	twitIndex = 0;
@@ -58,17 +59,17 @@ void twLcd::decSpeed()
 
 void twLcd::closeLcd()
 {
-	lcd->lcdClear;
+	lcd->lcdClear();
 }
 
 void twLcd::showTwit()
 {
 	tickCount = 0;								//Reinicia el timer
-	currentTwit = userName + ': - ' + list[twitIndex].text + ' ';
+	currentTwit = userName + ": - " + list[twitIndex].text + ' ';
 	currentTwitData = list[twitIndex].data;
-	lcd->lcdClear;
+	lcd->lcdClear();
 	(*lcd) << currentTwitData.c_str();
-	lcd->lcdSetCursorPosition[2][1];			//Llevo cursor a la posicion 1 de el segundo renglon
+	lcd->lcdSetCursorPosition({ 2,1 });			//Llevo cursor a la posicion 1 de el segundo renglon
 	(*lcd) << currentTwit.c_str();
 }
 
@@ -147,5 +148,5 @@ void twLcd::parser()
 
 twLcd::~twLcd()
 {
-	closeLcd;
+	closeLcd();
 }
