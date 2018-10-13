@@ -65,7 +65,8 @@ void twLcd::closeLcd()
 
 void twLcd::showTwit()
 {
-	tickCount = 0;								//Reinicia el timer
+	tickCount = 0;	//Reinicia el timer
+	offsetString = 0;
 	currentTwit = userName + ": - " + list[twitIndex].text + ' ';
 	currentTwitData = list[twitIndex].data;
 	lcd->lcdClear();
@@ -78,17 +79,23 @@ bool twLcd::update()
 {
 	if (tickCount == currentSpeed)
 	{
-		//if (currentTwit.size() == offsetString){doSomething() }
-		offsetString++;
-		lcd->lcdSetCursorPosition({ 2,1 });
-		lcd->lcdClearToEOL();
-		if ((currentTwit.size() - offsetString) <= MAX_LINE_SIZE)
+		if (currentTwit.size() != offsetString)
 		{
-			(*lcd) << currentTwit.substr(offsetString, currentTwit.size()).c_str();
+			offsetString++;
+			lcd->lcdSetCursorPosition({ 2,1 });
+			lcd->lcdClearToEOL();
+			if ((currentTwit.size() - offsetString) <= MAX_LINE_SIZE)
+			{
+				(*lcd) << currentTwit.substr(offsetString, currentTwit.size()).c_str();
+			}
+			else
+			{
+				(*lcd) << currentTwit.substr(offsetString, offsetString + MAX_LINE_SIZE).c_str();
+			}
 		}
 		else
 		{
-			(*lcd) << currentTwit.substr(offsetString, offsetString + MAX_LINE_SIZE).c_str();
+			showNextTwit();
 		}
 	}
 	else
