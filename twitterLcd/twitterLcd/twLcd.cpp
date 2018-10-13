@@ -51,7 +51,7 @@ void twLcd::incSpeed()
 
 void twLcd::decSpeed()
 {
-	if (currentSpeed == MIN_SPEED)
+	if (currentSpeed > MIN_SPEED)
 	{
 		currentSpeed--;
 	}
