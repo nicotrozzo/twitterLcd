@@ -6,6 +6,9 @@ using json = nlohmann::json;
 
 #define API_KEY "HCB39Q15wIoH61KIkY5faRDf6"
 #define API_SKEY "7s8uvgQnJqjJDqA6JsLIFp90FcOaoR5Ic41LWyHOic0Ht3SRJ6"
+#define NOT_A_USER 34	//error devuelto por twitter en caso que no sea un usuario
+
+static size_t myCallback(void *contents, size_t size, size_t nmemb, void *userp);
 
 twUser::twUser(const char *user, unsigned int cant)
 {
@@ -49,7 +52,8 @@ twUser::twUser(const char *user, unsigned int cant)
 		if (res != CURLE_OK)
 		{
 			err.type = CURL_EASY_PERF_ERR;
-			err.detail = "curl_easy_perform() failed: " + curl_easy_strerror(res);
+			err.detail = "curl_easy_perform() failed: ";
+			err.detail += curl_easy_strerror(res);
 			//Hacemos un clean up de curl antes de salir.
 			curl_easy_cleanup(curl);
 		}
@@ -140,23 +144,31 @@ void twUser::parseTwits(void)
 {
 	curl_easy_cleanup(curl);
 	json j = json::parse(readString);
-	try
+	if (j["errors"][0]["code"] != NOT_A_USER)
 	{
-		twit temp;
-		//Al ser el JSON un arreglo de objetos JSON se busca el campo text para cada elemento
-		for (auto element : j)
+		try
 		{
-			temp.text = static_cast<string>(element["text"]);
-			temp.data = static_cast<string>(element["created_at"]);
-			twits.push_back(temp);
+			twit temp;
+			//Al ser el JSON un arreglo de objetos JSON se busca el campo text para cada elemento
+			for (auto element : j)
+			{
+				temp.text = element["text"];
+				temp.data = element["created_at"];
+				twits.push_back(temp);
+			}
+			getchar();
 		}
-		getchar();
+		catch (std::exception& e)
+		{
+			//Error interno si hubo un error de la libreria
+			err.detail = e.what();
+			err.type = NO_ELEMENT_TEXT;
+		}
 	}
-	catch (std::exception& e)
+	else
 	{
-		//Error interno si hubo un error de la libreria
-		err.detail = e.what();
-		err.type = NO_ELEMENT_TEXT;
+		err.type = INEXISTING_USER;
+		err.detail = j["errors"][0]["message"];
 	}
 }
 	
@@ -167,7 +179,7 @@ twUser::~twUser()
 }
 
 //Concatena lo recibido en content a s
-size_t twUser::myCallback(void *contents, size_t size, size_t nmemb, void *userp)
+static size_t myCallback(void *contents, size_t size, size_t nmemb, void *userp)
 {
 	size_t realsize = size * nmemb;
 	char* data = (char *)contents;
@@ -181,3 +193,4 @@ twUserError twUser::getError()
 {
 	return err;
 }
+

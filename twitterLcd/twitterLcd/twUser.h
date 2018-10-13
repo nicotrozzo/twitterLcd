@@ -6,7 +6,7 @@
 
 using namespace std;
 
-typedef enum{NO_TW_ERR,CURL_START_ERR,TOKEN_ACCESS_ERR,CURL_EASY_PERF_ERR,NO_ELEMENT_TEXT}twErrType;
+typedef enum{NO_TW_ERR,CURL_START_ERR,TOKEN_ACCESS_ERR,CURL_EASY_PERF_ERR,NO_ELEMENT_TEXT,INEXISTING_USER}twErrType;
 
 typedef struct
 {
@@ -43,5 +43,5 @@ private:
 	twUserError err;
 	vector<twit>twits;
 	void setUpMulti(const char *user, unsigned int cant);
-	size_t myCallback(void *contents, size_t size, size_t nmemb, void *userp);
 };
+

@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 #include "basicLCD.h"
 #include <vector>
 #include <string>
@@ -38,3 +38,4 @@ private:
 	unsigned char totalTwits;
 	void parser();
 };
+*/

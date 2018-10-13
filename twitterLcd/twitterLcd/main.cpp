@@ -11,5 +11,3 @@ int main(int argc,char *argv[])
 		user.getTwits();
 	}
 }
-
-const char *user, unsigned int cant
