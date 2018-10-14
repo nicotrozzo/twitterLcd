@@ -39,6 +39,7 @@ private:
 	size_t offsetString;
 	unsigned char totalTwits;
 	bool showingTwits;
+	char loadingChars[4];
 	void showTwit();
 	void parseText();
 	void parseData();

@@ -5,7 +5,7 @@
 #define DEFAULT_SPEED 3
 #define MAX_LINE_SIZE	16
 
-twLcd::twLcd(basicLCD* dispPointer, unsigned char totalTwits_, string& userName_)
+twLcd::twLcd(basicLCD* dispPointer, unsigned char totalTwits_, string& userName_) : loadingChars({ '-','/','|','\\' })
 {
 	currentSpeed = DEFAULT_SPEED;
 	tickCount = 0;
@@ -101,9 +101,9 @@ void twLcd::showTwit()
 
 bool twLcd::update()
 {
-	if (tickCount == currentSpeed)
+	if (showingTwits)
 	{
-		if (showingTwits)
+		if (tickCount == currentSpeed)
 		{
 			if (currentTwit.size() != offsetString)
 			{
@@ -126,12 +126,17 @@ bool twLcd::update()
 		}
 		else
 		{
-
+			tickCount++;
 		}
 	}
 	else
 	{
-		tickCount++;
+		lcd->lcdSetCursorPosition({ 2,1 });
+		*lcd << loadingChars[tickCount++];
+		if (tickCount == 4)
+		{
+			tickCount = 0;
+		}
 	}
 }
 
