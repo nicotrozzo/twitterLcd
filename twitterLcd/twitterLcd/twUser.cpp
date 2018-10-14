@@ -10,7 +10,7 @@ using json = nlohmann::json;
 
 static size_t myCallback(void *contents, size_t size, size_t nmemb, void *userp);
 
-twUser::twUser(const char *user, unsigned int cant)
+twUser::twUser(const char *user, unsigned int cant) : twits(cant)
 {
 	string API_key = API_KEY;
 	string API_SecretKey = API_SKEY;
