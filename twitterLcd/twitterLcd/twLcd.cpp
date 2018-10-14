@@ -178,7 +178,8 @@ void twLcd::parseText()
 void twLcd::parseData()
 {
 	tm data;				//NO SE COMO SE HACE
-	put_time(&data, "%D");
+	stringstream ss(list.data);
+	ss >> std::get_time(&data, "%b %d %Y %H:%M:%S");
 }
 
 twLcd::~twLcd()
