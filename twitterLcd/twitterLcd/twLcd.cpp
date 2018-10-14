@@ -29,7 +29,7 @@ void twLcd::initDisplay()
 		*lcd << ('@' + userName.substr(0, MAX_LINE_SIZE - 2) + ':').c_str();
 	}
 	lcd->lcdSetCursorPosition({2,1});
-	*lcd << '|';
+	update();
 }
 
 void twLcd::startShowing(vector<twit> list_)
@@ -38,9 +38,10 @@ void twLcd::startShowing(vector<twit> list_)
 	twitIndex = 0;
 	tickCount = 0;
 	offsetString = 0;
-	parseText();							//falta parsear fecha y hora
+	parseData();
+	parseText();							
 	showingTwits = true;
-	showAgain();
+	showTwit();
 }
 
 void twLcd::showNextTwit()
@@ -230,6 +231,31 @@ void twLcd::parseData()
 		}
 	}
 	str >> get_time(&data, "%a %b %d %H:%M:%S %Y");
+	char * d, *m, *y, *h, *min;
+	itoa(data.tm_mday, d, 10);
+	itoa(data.tm_mon+1, m, 10);
+	itoa(data.tm_year + 1900, y, 10);				//en la estructura tm el año devuelve a partir del 1900
+	itoa(data.tm_hour, h, 10);
+	itoa(data.tm_min, min, 10);
+	string day = d, year = y, month = m, hour = h, minute = min;
+	year.erase(0, 1);								//dejo el año en formato YY
+	if (data.tm_mday < 9)
+	{
+		day = '0' + day;
+	}
+	if ((data.tm_mon + 1) < 9)						//ya que en la estructura se guarda el mes del 0 al 11
+	{
+		month = '0' + month;
+	}
+	if (data.tm_hour < 9)
+	{
+		hour = '0' + hour;
+	}
+	if (data.tm_min < 9)
+	{
+		minute = '0' + minute;
+	}
+	list.data = day + '/' + month + '/' + year + " - " + hour + ':' + minute;
 }
 
 twLcd::~twLcd()
