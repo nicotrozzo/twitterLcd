@@ -215,9 +215,21 @@ void twLcd::parseText()
 
 void twLcd::parseData()
 {
-	tm data;				//NO SE COMO SE HACE
-	stringstream ss(list.data);
-	ss >> std::get_time(&data, "%b %d %Y %H:%M:%S");
+	tm data = {};				
+	stringstream str(list.data);
+	for (int i = 0; i < list.data.size(); i++)
+	{
+		if (list.data[i] == '+')
+		{
+			while (list.data[i] != ' ')
+			{
+				list.data.erase(i);					//borro la zona horaria del string
+				i++;
+			}
+			list.data.erase(i);						//borro el espacio siguiente
+		}
+	}
+	str >> get_time(&data, "%a %b %d %H:%M:%S %Y");
 }
 
 twLcd::~twLcd()
