@@ -21,8 +21,11 @@ int main(int argc, char *argv[])
 		twUser user(userName.c_str(),amountOfTwits);
 		if (user.getError().type == NO_TW_ERR)
 		{
+			twLcd lcdManager(lcd,amountOfTwits,)
+			//while(!quit)
 			while (user.getTwits() != 0)
 			{
+				//chequear timer y si apretaron 'Q'
 				//dibujar en el lcd algo para que se vea que no se colgo
 			}
 

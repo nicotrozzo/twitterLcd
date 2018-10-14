@@ -5,17 +5,43 @@
 #define DEFAULT_SPEED 3
 #define MAX_LINE_SIZE	16
 
-twLcd::twLcd(basicLCD* dispPointer, unsigned char totalTwits_, vector<twit> list_) : list(list_)
+twLcd::twLcd(basicLCD* dispPointer, unsigned char totalTwits_, string& userName_)
 {
 	currentSpeed = DEFAULT_SPEED;
 	tickCount = 0;
-	lcd = dispPointer;
-	totalTwits = totalTwits_;
-	parseText();							//falta parsear fecha y hora
-
 	twitIndex = 0;
+	totalTwits = totalTwits_;
+	userName = userName_;
+	showingTwits = false; //empieza mostrando una secuencia de caracteres en pantalla para indicar que el programa no se colgo, mas adelante mostrara los twits
+	lcd = dispPointer;
+	initDisplay();
 }
 
+void twLcd::initDisplay()
+{
+	lcd->lcdClear();	
+	if (userName.size() <= MAX_LINE_SIZE+2)
+	{
+		*lcd << ('@'+userName+':').c_str();
+	}
+	else
+	{
+		*lcd << ('@' + userName.substr(0, MAX_LINE_SIZE - 2) + ':').c_str();
+	}
+	lcd->lcdSetCursorPosition({2,1});
+	*lcd << '|';
+}
+
+void twLcd::startShowing(vector<twit> list_)
+{
+	list = list_;
+	twitIndex = 0;
+	tickCount = 0;
+	offsetString = 0;
+	parseText();							//falta parsear fecha y hora
+	showingTwits = true;
+	showAgain();
+}
 
 void twLcd::showNextTwit()
 {
@@ -77,23 +103,30 @@ bool twLcd::update()
 {
 	if (tickCount == currentSpeed)
 	{
-		if (currentTwit.size() != offsetString)
+		if (showingTwits)
 		{
-			offsetString++;
-			lcd->lcdSetCursorPosition({ 2,1 });
-			lcd->lcdClearToEOL();
-			if ((currentTwit.size() - offsetString) <= MAX_LINE_SIZE)
+			if (currentTwit.size() != offsetString)
 			{
-				(*lcd) << currentTwit.substr(offsetString, currentTwit.size()).c_str();
+				offsetString++;
+				lcd->lcdSetCursorPosition({ 2,1 });
+				lcd->lcdClearToEOL();
+				if ((currentTwit.size() - offsetString) <= MAX_LINE_SIZE)
+				{
+					(*lcd) << currentTwit.substr(offsetString, currentTwit.size()).c_str();
+				}
+				else
+				{
+					(*lcd) << currentTwit.substr(offsetString, offsetString + MAX_LINE_SIZE).c_str();
+				}
 			}
 			else
 			{
-				(*lcd) << currentTwit.substr(offsetString, offsetString + MAX_LINE_SIZE).c_str();
+				showNextTwit();
 			}
 		}
 		else
 		{
-			showNextTwit();
+
 		}
 	}
 	else
