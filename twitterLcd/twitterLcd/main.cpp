@@ -15,6 +15,7 @@ basicLCD* getDisplay(void);
 
 int main(int argc, char *argv[])
 {
+	bool quit = false;
 	string userName;
 	int amountOfTwits;
 	if (cmdLineParser(argc, argv, userName, amountOfTwits))
@@ -34,7 +35,12 @@ int main(int argc, char *argv[])
 												//}
 				//chequear timer y si apretaron 'Q'
 			}
-
+			lcdManager.startShowing(user.getTwitList());
+			while (!quit)
+			{
+				quit = lcdManager.update();
+				Sleep(20);
+			}
 		}
 	}
 }
@@ -43,6 +49,7 @@ basicLCD* getDisplay(void)
 {
 	return new hitachiLCD(DEVICE);
 }
+
 /*Devuelve true si estan dadas las condiciones para continuar con el programa
 Esto es, si solo se recibio el nombre de usuario o si ademas opcionalmente se envio un numero positivo 
 para la cantidad de twits a mostrar.

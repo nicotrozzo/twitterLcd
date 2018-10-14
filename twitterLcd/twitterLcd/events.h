@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 
 typedef enum {KEY_A, KEY_R, KEY_S, KEY_Q, KEY_PLUS, KEY_MINUS, TIMER};
 typedef enum { NO_EVENT, KEY_EVENT, TIMER_EVENT }eventType;
@@ -12,9 +12,9 @@ typedef struct
 
 class events
 {
-public:
-	events(/*WINDOW * window*/);
-	~events();
+public:*/
+	//events(/*WINDOW * window*/);
+/*	~events();
 	bool incomEvent();
 	bool keyPressed();
 	int getKey();	//ver porque wgetch() devuelve int
@@ -23,4 +23,4 @@ private:
 	eventType evento;
 	//WINDOW *win;
 	std::chrono::system_clock::time_point initial;		//iniciarlo con now() en el while donde esta el dispatcher
-};
+};*/

@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClInclude Include="events.h" />
     <ClInclude Include="json.hpp" />
+    <ClInclude Include="twitter.h" />
     <ClInclude Include="twLcd.h" />
     <ClInclude Include="twUser.h" />
   </ItemGroup>

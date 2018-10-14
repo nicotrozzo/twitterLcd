@@ -102,6 +102,7 @@ void twLcd::showTwit()
 
 bool twLcd::update()
 {
+	bool ret = false;
 	if (showingTwits)
 	{
 		if (tickCount == currentSpeed)
@@ -122,7 +123,14 @@ bool twLcd::update()
 			}
 			else
 			{
-				showNextTwit();
+				if (twitIndex < MAX_LINE_SIZE)
+				{
+					showNextTwit();
+				}
+				else
+				{
+					ret = true;
+				}
 			}
 		}
 		else
@@ -139,6 +147,7 @@ bool twLcd::update()
 			tickCount = 0;
 		}
 	}
+	return ret;
 }
 
 void twLcd::parseText()

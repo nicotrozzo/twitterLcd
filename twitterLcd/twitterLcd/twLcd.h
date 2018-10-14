@@ -6,15 +6,9 @@
 #include <ctime>
 #include <iostream>
 #include <sstream>
-
+#include "twitter.h"
 
 using namespace std;
-
-typedef struct
-{
-	string text;
-	string data;
-}twit;
 
 class twLcd
 {

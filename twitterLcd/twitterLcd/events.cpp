@@ -1,9 +1,10 @@
-#include "events.h"
+/*#include "events.h"
 #include "curses.h"
 #include <ratio>
 #include <chrono>
-events::events(/*WINDOW * window*/)	//mandar stdsrc
-{
+*/
+//events::events(/*WINDOW * window*/)	//mandar stdsrc
+/*{
 	initscr();		//esto ponerlo en el main y que esto reciba un puntero a window y que sea el stdscr
 	//win = window;
 	keypad(stdscr, true);
@@ -54,4 +55,4 @@ int events::getKey()
 events::~events()
 {
 	endwin();
-}
+}*/

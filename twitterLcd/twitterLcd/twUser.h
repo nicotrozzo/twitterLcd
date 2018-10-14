@@ -3,6 +3,7 @@
 #include <curl/curl.h>
 #include <exception>
 #include <vector>
+#include "twitter.h"
 
 using namespace std;
 
@@ -13,12 +14,6 @@ typedef struct
 	string detail;
 	twErrType type;
 }twUserError;
-
-typedef struct
-{
-	string text;
-	string data;
-}twit;
 
 class twUser
 {
