@@ -4,6 +4,7 @@
 #include <string>
 #include <iomanip>
 #include <ctime>
+#include "events.h"
 
 
 using namespace std;
@@ -40,4 +41,5 @@ private:
 	unsigned char totalTwits;
 	void parseText();
 	void parseData();
+	events ev;
 };
