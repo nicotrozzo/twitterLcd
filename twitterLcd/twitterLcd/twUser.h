@@ -27,8 +27,12 @@ public:
 	como segundo parametro la cantidad de twits.*/
 	twUser(const char *user, unsigned int cant = 0);
 	/*getTwits:
-	No bloqueante, llamar hasta que devuelva 0 para que reciba todo*/
+	No bloqueante, llamar hasta que devuelva 0 para que reciba todo
+	Al terminar, parsea los twits*/
 	int getTwits();
+	/*Toma lo que haya internamente guardado recibido de Twitter y lo parsea
+	Se recomienda no utilizarla, sino llamar a getTwits() que los parsea al terminar de recibir el mensaje*/
+	void parseTwits();
 	twUserError getError();
 	vector<twit> getTwitList();
 	~twUser();
@@ -43,6 +47,5 @@ private:
 	twUserError err;
 	vector<twit>twits;
 	void setUpMulti(const char *user, unsigned int cant);
-	void parseTwits();
 };
 

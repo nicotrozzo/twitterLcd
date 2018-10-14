@@ -5,17 +5,15 @@
 #define DEFAULT_SPEED 3
 #define MAX_LINE_SIZE	16
 
-twLcd::twLcd(basicLCD* dispPointer, unsigned char totalTwits_, vector<twit> list_)
+twLcd::twLcd(basicLCD* dispPointer, unsigned char totalTwits_, vector<twit> list_) : list(list_)
 {
 	currentSpeed = DEFAULT_SPEED;
 	tickCount = 0;
 	lcd = dispPointer;
 	totalTwits = totalTwits_;
-	list = list_;
 	parseText();							//falta parsear fecha y hora
 
 	twitIndex = 0;
-	showAgain();
 }
 
 
