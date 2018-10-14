@@ -210,7 +210,7 @@ void twLcd::parseText()
 
 void twLcd::parseData()
 {
-	struct tm data;				//NO SE COMO SE HACE
+	tm data;				//NO SE COMO SE HACE
 	put_time(&data, "%D");
 }
 
