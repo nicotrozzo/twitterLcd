@@ -2,6 +2,7 @@
 #include "hitachiLCD.h"
 #include "twUser.h"
 #include "twLcd.h"
+#include <Windows.h>
 #include <boost/lexical_cast.hpp>
 
 
@@ -29,7 +30,8 @@ int main(int argc, char *argv[])
 				//if(eventodetimer)
 				//{
 					lcdManager.update(); 		//dibujar en el lcd algo para que se vea que no se colgo
-				//}
+					Sleep(30);
+												//}
 				//chequear timer y si apretaron 'Q'
 			}
 
