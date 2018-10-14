@@ -141,6 +141,7 @@ void twUser::setUpMulti(const char *user, unsigned int cant)
 
 		//Realizamos ahora un perform no bloqueante
 		curl_multi_perform(multiHandle, &stillRunning);
+		err.type = NO_TW_ERR;
 	}
 }
 

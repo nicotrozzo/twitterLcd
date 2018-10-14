@@ -1,6 +1,7 @@
 #include "basicLCD.h"
 #include "hitachiLCD.h"
 #include "twUser.h"
+#include "twLcd.h"
 #include <boost/lexical_cast.hpp>
 
 
@@ -21,9 +22,15 @@ int main(int argc, char *argv[])
 		twUser user(userName.c_str(),amountOfTwits);
 		if (user.getError().type == NO_TW_ERR)
 		{
+			twLcd lcdManager(lcd, amountOfTwits, userName);
+			//while(!quit)
 			while (user.getTwits() != 0)
 			{
-				//dibujar en el lcd algo para que se vea que no se colgo
+				//if(eventodetimer)
+				//{
+					lcdManager.update(); 		//dibujar en el lcd algo para que se vea que no se colgo
+				//}
+				//chequear timer y si apretaron 'Q'
 			}
 
 		}
