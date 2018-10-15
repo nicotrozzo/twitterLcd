@@ -169,7 +169,7 @@ void twUser::parseTwits(void)
 			else
 			{
 				err.type = NO_TWITS;
-				err.detail = "The requested account has no twits";
+				err.detail = "No twits";
 			}
 		}
 		else if(j.type() == json::value_t::object)
@@ -177,7 +177,7 @@ void twUser::parseTwits(void)
 			if (j["errors"][0]["code"] == NOT_A_USER)
 			{
 				err.type = NONEXISTING_USER;
-				err.detail = j["errors"][0]["message"];
+				err.detail = "Nonexisting user";
 			}
 			else
 			{

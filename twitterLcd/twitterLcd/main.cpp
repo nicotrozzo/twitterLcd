@@ -26,22 +26,30 @@ int main(int argc, char *argv[])
 		events ev;
 		if (user.getError().type == NO_TW_ERR)
 		{
-			twLcd lcdManager(lcd, amountOfTwits, userName);
+			twLcd lcdManager(lcd, userName);
 			//while(!quit)
 			while (user.getTwits() != 0)
 			{
 				//if(eventodetimer)
 				//{
-					lcdManager.update(); 		//dibujar en el lcd algo para que se vea que no se colgo
-					Sleep(30);
-												//}
+				lcdManager.update(); 		//dibujar en el lcd algo para que se vea que no se colgo
+				Sleep(30);
+				//}
 				//chequear timer y si apretaron 'Q'
 			}
-			lcdManager.startShowing(user.getTwitList());
-			while (!quit)
+			if (user.getError().type == NO_TW_ERR)
 			{
-				quit = lcdManager.update();
-				Sleep(20);
+				lcdManager.startShowing(user.getTwitList(), user.getTwitList().size());
+				while (!quit)
+				{
+					quit = lcdManager.update();
+					Sleep(20);
+				}
+			}
+			else
+			{
+				lcdManager.printError(user.getError().detail.c_str());
+				Sleep(500);
 			}
 		}
 	}
