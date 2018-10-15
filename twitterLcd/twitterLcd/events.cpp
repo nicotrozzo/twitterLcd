@@ -19,13 +19,14 @@ events::events(/*WINDOW * window*/)	//mandar stdsrc
 
 bool events::incomEvent()
 {
-	std::chrono::duration< int, std::ratio<1, 1> > oneSec;
+	std::chrono::duration< int, std::ratio<1> > oneSec(1);
 	if (keyPressed())
 	{
 		evento = KEYBOARD_EVENT;
 	}
 	else if( (initial + 3 * oneSec) <= std::chrono::system_clock::now())
 	{
+		initial = std::chrono::system_clock::now();
 		evento = TIMER_EVENT;
 	}
 	else
