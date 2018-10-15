@@ -58,8 +58,9 @@ int events::getKey()
 	return key;
 }
 
-void events::dispatcher(twLcd& lcdManager)
+bool events::dispatcher(twLcd& lcdManager)
 {
+	bool ret = false;
 	if (currentState == LOADING_TWITS)
 	{
 		if (evento == KEYBOARD_EVENT)
@@ -74,7 +75,6 @@ void events::dispatcher(twLcd& lcdManager)
 		{
 			lcdManager.update();
 		}
-		
 	}
 	else if (currentState == SHOWING_TWITS)
 	{
@@ -106,9 +106,10 @@ void events::dispatcher(twLcd& lcdManager)
 		}
 		else if (evento == TIMER_EVENT)
 		{
-			lcdManager.update();
+			ret = lcdManager.update();
 		}
 	}
+	return ret;
 }
 
 /*void events::fsmCycle(const event_k_t evento, void *userData)
@@ -161,7 +162,7 @@ eventType events::getEvent()
 	return evento;
 }
 
-event_k events::geyKeyEvent()
+event_k events::getKeyEvent()
 {
 	return keyEvent;
 }

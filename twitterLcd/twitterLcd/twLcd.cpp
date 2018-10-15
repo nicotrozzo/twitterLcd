@@ -123,7 +123,7 @@ bool twLcd::update()
 			}
 			else
 			{
-				if (twitIndex < MAX_LINE_SIZE)
+				if (twitIndex < list.size())
 				{
 					showNextTwit();
 				}

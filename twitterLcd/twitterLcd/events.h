@@ -18,20 +18,20 @@ public:
 	events(/*WINDOW * window*/);
 	~events();
 	bool incomEvent();
-	bool keyPressed();
-	int getKey();	//ver porque wgetch() devuelve int
+	bool keyPressed();	
 	eventType getEvent();
-	event_k geyKeyEvent();
-	void dispatcher(twLcd& lcdManager);
+	event_k getKeyEvent();
+	bool dispatcher(twLcd& lcdManager);
 private:
 	void fsmCycle(const event_k evento, void *userData);
-	int key;		//lo mismo que lo comentado arriba
+	int key;		
 	eventType evento;
 	event_k keyEvent;
 	//WINDOW *win;
 	std::chrono::system_clock::time_point initial;		//iniciarlo con now() en el while donde esta el dispatcher
 	stateType currentState;
 	void checkKey();
+	int getKey();
 };
 
 void noAction(void*);

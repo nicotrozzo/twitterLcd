@@ -34,7 +34,6 @@ int main(int argc, char *argv[])
 					if (ev.getEvent() == TIMER_EVENT)
 					{
 						lcdManager.update(); 		//dibujar en el lcd algo para que se vea que no se colgo
-						Sleep(30);
 					}
 					else if (ev.getEvent() == KEYBOARD_EVENT)
 					{
@@ -46,10 +45,20 @@ int main(int argc, char *argv[])
 			if (user.getError().type == NO_TW_ERR)
 			{
 				lcdManager.startShowing(user.getTwitList(), user.getTwitList().size());
-				while (!quit)
+				while (!quit && (ev.getKeyEvent() != KEY_Q))
 				{
-					quit = lcdManager.update();
-					Sleep(20);
+					if (ev.incomEvent())
+					{
+						if (ev.getEvent() == TIMER_EVENT)
+						{
+							//quit = lcdManager.update(); 		//dibujar en el lcd algo para que se vea que no se colgo
+							
+						}
+						else if (ev.getEvent() == KEYBOARD_EVENT)
+						{
+							quit = ev.dispatcher(lcdManager);
+						}
+					}
 				}
 			}
 			else
