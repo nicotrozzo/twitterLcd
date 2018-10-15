@@ -6,7 +6,6 @@
 #include <boost/lexical_cast.hpp>
 #include "events.h"
 
-
 #define DISPLAY 4
 #define DEFAULT_AMOUNT_OF_TWITS 15
 #define DEVICE 5 //numero de lcd del grupo
@@ -21,8 +20,8 @@ int main(int argc, char *argv[])
 	int amountOfTwits;
 	if (cmdLineParser(argc, argv, userName, amountOfTwits))
 	{
-		basicLCD* lcd = getDisplay(); 
-		twUser user(userName.c_str(),amountOfTwits);
+		basicLCD* lcd = getDisplay();
+		twUser user(userName.c_str(), amountOfTwits);
 		events ev;
 		if (user.getError().type == NO_TW_ERR)
 		{
@@ -61,10 +60,10 @@ basicLCD* getDisplay(void)
 }
 
 /*Devuelve true si estan dadas las condiciones para continuar con el programa
-Esto es, si solo se recibio el nombre de usuario o si ademas opcionalmente se envio un numero positivo 
+Esto es, si solo se recibio el nombre de usuario o si ademas opcionalmente se envio un numero positivo
 para la cantidad de twits a mostrar.
 De haber mas parametros estos son ignorados*/
-bool cmdLineParser(int argc, char *argv[],string &userName, int &amountOfTwits)
+bool cmdLineParser(int argc, char *argv[], string &userName, int &amountOfTwits)
 {
 	bool ret = false;
 	if (argc > 1)
@@ -76,7 +75,7 @@ bool cmdLineParser(int argc, char *argv[],string &userName, int &amountOfTwits)
 			try
 			{
 				amountOfTwits = boost::lexical_cast<int>(check);	//intenta pasar a un int el segundo parametro, si no puede habra una excepcion
-				if (amountOfTwits > 0)	
+				if (amountOfTwits > 0)
 				{
 					ret = true;	//solo se continuara con el programa si enviaron una cantidad positiva de twits a mostrar
 				}
@@ -93,7 +92,7 @@ bool cmdLineParser(int argc, char *argv[],string &userName, int &amountOfTwits)
 		else
 		{
 			amountOfTwits = 0;	//si no especifican cantidad de twits, se toma 0, y se interpretara luego como que se pide el default de Twitter
-			ret = true; 
+			ret = true;
 		}
 	}
 	else

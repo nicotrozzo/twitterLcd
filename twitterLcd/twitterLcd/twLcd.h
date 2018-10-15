@@ -4,11 +4,9 @@
 #include <string>
 #include <iomanip>
 #include <ctime>
-
 #include <iostream>
 #include <sstream>
 #include "twitter.h"
-
 
 using namespace std;
 
@@ -43,5 +41,4 @@ private:
 	void parseText();
 	void parseData();
 	void initDisplay();
-
 };

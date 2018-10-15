@@ -5,7 +5,7 @@
 #define DEFAULT_SPEED 3
 #define MAX_LINE_SIZE	16
 
-twLcd::twLcd(basicLCD* dispPointer,  string& userName_) : loadingChars{ '-','/','|','\\' }
+twLcd::twLcd(basicLCD* dispPointer, string& userName_) : loadingChars{ '-','/','|','\\' }
 {
 	currentSpeed = DEFAULT_SPEED;
 	tickCount = 0;
@@ -18,16 +18,16 @@ twLcd::twLcd(basicLCD* dispPointer,  string& userName_) : loadingChars{ '-','/',
 
 void twLcd::initDisplay()
 {
-	lcd->lcdClear();	
-	if (userName.size() <= MAX_LINE_SIZE+2)
+	lcd->lcdClear();
+	if (userName.size() <= MAX_LINE_SIZE + 2)
 	{
-		*lcd << ('@'+userName+':').c_str();
+		*lcd << ('@' + userName + ':').c_str();
 	}
 	else
 	{
 		*lcd << ('@' + userName.substr(0, MAX_LINE_SIZE - 2) + ':').c_str();
 	}
-	lcd->lcdSetCursorPosition({2,1});
+	lcd->lcdSetCursorPosition({ 2,1 });
 	update();
 }
 
@@ -39,7 +39,7 @@ void twLcd::startShowing(vector<twit> list_, size_t totalTwits_)
 	tickCount = 0;
 	offsetString = 0;
 	parseData();
-	parseText();							
+	parseText();
 	showingTwits = true;
 	showTwit();
 }
@@ -97,7 +97,7 @@ void twLcd::showTwit()
 	lcd->lcdClear();
 	(*lcd) << currentTwitData.c_str();
 	lcd->lcdSetCursorPosition({ 2,1 });			//Llevo cursor a la posicion 1 de el segundo renglon
-	(*lcd) << currentTwit.substr(offsetString,offsetString+MAX_LINE_SIZE).c_str();
+	(*lcd) << currentTwit.substr(offsetString, offsetString + MAX_LINE_SIZE).c_str();
 }
 
 bool twLcd::update()
@@ -225,12 +225,12 @@ void twLcd::parseText()
 
 void twLcd::parseData()
 {
-	tm data = {};	
+	tm data = {};
 	size_t eraseFrom;
 	for (int i = 0; i < list.size(); i++)
 	{
 		eraseFrom = list[i].data.find("+0000");
-		list[i].data.erase(eraseFrom,eraseFrom+strlen("+0000 "));	//saca la zona horaria
+		list[i].data.erase(eraseFrom, eraseFrom + strlen("+0000 "));	//saca la zona horaria
 		stringstream str(list[i].data);
 		str >> get_time(&data, "%a %b %d %H:%M:%S %Y");
 		if (data.tm_mday < 10)	//pone la fecha y hora en el formato pedido
@@ -247,7 +247,7 @@ void twLcd::parseData()
 		{
 			list[i].data += '0';
 		}
-		list[i].data += to_string(data.tm_mon+1) + '/' + to_string(data.tm_year + 1900).substr(2, 4) + " - ";
+		list[i].data += to_string(data.tm_mon + 1) + '/' + to_string(data.tm_year + 1900).substr(2, 4) + " - ";
 		if (data.tm_hour < 10)
 		{
 			list[i].data += '0';
@@ -260,7 +260,7 @@ void twLcd::parseData()
 		list[i].data += to_string(data.tm_min);
 	}
 
-	
+
 	/*itoa(data.tm_mday, d, 10);
 	itoa(data.tm_mon+1, m, 10);
 	itoa(data.tm_year + 1900, y, 10);				//en la estructura tm el año devuelve a partir del 1900
