@@ -29,11 +29,18 @@ int main(int argc, char *argv[])
 			//while(!quit)
 			while (user.getTwits() != 0)
 			{
-				//if(eventodetimer)
-				//{
-				lcdManager.update(); 		//dibujar en el lcd algo para que se vea que no se colgo
-				Sleep(30);
-				//}
+				if (ev.incomEvent())
+				{
+					if (ev.getEvent() == TIMER_EVENT)
+					{
+						lcdManager.update(); 		//dibujar en el lcd algo para que se vea que no se colgo
+						Sleep(30);
+					}
+					else if (ev.getEvent() == KEYBOARD_EVENT)
+					{
+						ev.dispatcher(lcdManager);
+					}
+				}
 				//chequear timer y si apretaron 'Q'
 			}
 			if (user.getError().type == NO_TW_ERR)

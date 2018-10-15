@@ -14,6 +14,7 @@ events::events(/*WINDOW * window*/)	//mandar stdsrc
 	keypad(stdscr, true);
 	nodelay(stdscr, true);		//estas dos funciones hacen que getch() no sea bloqueante
 	noecho();
+	currentState = LOADING_TWITS;
 }
 
 bool events::incomEvent()
@@ -21,7 +22,7 @@ bool events::incomEvent()
 	std::chrono::duration< int, std::ratio<1, 1> > oneSec;
 	if (keyPressed())
 	{
-		evento = KEY_EVENT;
+		evento = KEYBOARD_EVENT;
 	}
 	else if( (initial + 3 * oneSec) <= std::chrono::system_clock::now())
 	{
@@ -56,6 +57,59 @@ int events::getKey()
 	return key;
 }
 
+void events::dispatcher(twLcd& lcdManager)
+{
+	if (currentState == LOADING_TWITS)
+	{
+		if (evento == KEYBOARD_EVENT)
+		{
+			if (keyEvent == KEY_Q)
+			{
+				lcdManager.closeLcd();
+				currentState = SHOWING_TWITS;
+			}
+		}
+		else if (evento == TIMER_EVENT)
+		{
+			lcdManager.update();
+		}
+		
+	}
+	else if (currentState == SHOWING_TWITS)
+	{
+		if (evento == KEYBOARD_EVENT)
+		{
+			switch (keyEvent)
+			{
+			case KEY_A:
+				lcdManager.showPreviousTwit();
+				break;
+			case KEY_R:
+				lcdManager.showAgain();
+				break;
+			case KEY_S:
+				lcdManager.showNextTwit();
+				break;
+			case KEY_Q:
+				//lcdManager.closeLcd();
+				break;
+			case KEY_PLUS:
+				lcdManager.incSpeed();
+				break;
+			case KEY_MINUS:
+				lcdManager.decSpeed();
+				break;
+			default:
+				break;
+			}
+		}
+		else if (evento == TIMER_EVENT)
+		{
+			lcdManager.update();
+		}
+	}
+}
+
 /*void events::fsmCycle(const event_k_t evento, void *userData)
 {
 	const celltype_n tableFsm[EVENT_COUNT][STATE_COUNT] = 
@@ -70,8 +124,8 @@ int events::getKey()
 }*/
 
 void events::checkKey()
-{
-	if (evento == KEY_EVENT)
+{ 
+	if (evento == KEYBOARD_EVENT)
 	{
 		key = getKey();
 		switch (key)
@@ -84,6 +138,9 @@ void events::checkKey()
 			break;
 		case 's': case 'S':
 			keyEvent = KEY_S;
+			break;
+		case 'q': case 'Q':
+			keyEvent = KEY_Q;
 			break;
 		case '+':
 			keyEvent = KEY_PLUS;
