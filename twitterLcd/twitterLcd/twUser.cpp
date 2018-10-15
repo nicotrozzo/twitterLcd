@@ -148,7 +148,21 @@ void twUser::setUpMulti(const char *user, unsigned int cant)
 void twUser::parseTwits(void)
 {
 	curl_easy_cleanup(curl);
+	int lastText = 0, previousText = 0;
+	string lastTwit;	//en caso que no se haya completado
+	if (stillRunning)
+	{
+		while (lastText < readString.size())
+		{
+			previousText = lastText;
+			lastText = readString.find("text\":\"");
+		}
+		int end = readString.find("\",",previousText);
+		lastTwit = readString.substr(previousText,end);
+		readString = readString.substr(0, previousText) + "}]";	//corta el json
+	}
 	json j = json::parse(readString);
+
 	try
 	{
 		if(j.type() == json::value_t::array)
@@ -163,6 +177,11 @@ void twUser::parseTwits(void)
 					int extended = temp.text.find("https");
 					temp.text = temp.text.substr(0, extended);	//elimina la URL al final de los twits
 					temp.data = element["created_at"];
+					twits.push_back(temp);
+				}
+				if (stillRunning)	
+				{
+					temp.text = lastTwit;
 					twits.push_back(temp);
 				}
 			}
