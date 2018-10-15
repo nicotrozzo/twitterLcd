@@ -12,9 +12,9 @@ typedef struct
 
 class events
 {
-public:*/
-	//events(/*WINDOW * window*/);
-/*	~events();
+public:
+	events(/*WINDOW * window*/);
+	~events();
 	bool incomEvent();
 	bool keyPressed();
 	int getKey();	//ver porque wgetch() devuelve int
@@ -33,3 +33,5 @@ private:
 };
 
 void noAction(void*);
+
+

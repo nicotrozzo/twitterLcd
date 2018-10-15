@@ -4,6 +4,7 @@
 #include "twLcd.h"
 #include <Windows.h>
 #include <boost/lexical_cast.hpp>
+#include "events.h"
 
 
 #define DISPLAY 4
@@ -22,6 +23,7 @@ int main(int argc, char *argv[])
 	{
 		basicLCD* lcd = getDisplay(); 
 		twUser user(userName.c_str(),amountOfTwits);
+		events ev;
 		if (user.getError().type == NO_TW_ERR)
 		{
 			twLcd lcdManager(lcd, amountOfTwits, userName);

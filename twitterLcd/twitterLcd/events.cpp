@@ -1,7 +1,8 @@
-/*#include "events.h"
+#include "events.h"
 #include "curses.h"
 #include <ratio>
 #include <chrono>
+
 
 #define EVENT_COUNT	8	
 #define STATE_COUNT	2
@@ -110,4 +111,4 @@ event_k events::geyKeyEvent()
 events::~events()
 {
 	endwin();
-}*/
+}
