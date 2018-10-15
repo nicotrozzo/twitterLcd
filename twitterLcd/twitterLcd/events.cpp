@@ -1,4 +1,4 @@
-#include "events.h"
+/*#include "events.h"
 #include "curses.h"
 #include <ratio>
 #include <chrono>
@@ -110,4 +110,4 @@ event_k events::geyKeyEvent()
 events::~events()
 {
 	endwin();
-}
+}*/

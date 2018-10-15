@@ -4,21 +4,18 @@
 #include <string>
 #include <iomanip>
 #include <ctime>
+#include <iostream>
+#include <sstream>
+#include "twitter.h"
 #include "events.h"
 
-
 using namespace std;
-
-typedef struct
-{
-	string text;
-	string data;
-}twit;
 
 class twLcd
 {
 public:
-	twLcd(basicLCD * dispPointer,unsigned char totalTwits_, vector<twit> list_);
+	twLcd(basicLCD * dispPointer, unsigned char totalTwits_, string& userName_);
+	void startShowing(vector<twit> list_);
 	void showNextTwit();
 	void showAgain();
 	void showPreviousTwit();
@@ -37,9 +34,11 @@ private:
 	vector<twit> list;
 	unsigned int twitIndex;
 	size_t offsetString;
-	void showTwit();
 	unsigned char totalTwits;
+	bool showingTwits;
+	char loadingChars[4];
+	void showTwit();
 	void parseText();
 	void parseData();
-	events ev;
+	void initDisplay();
 };

@@ -12,6 +12,7 @@
     <ClInclude Include="twLcd.h" />
     <ClInclude Include="twUser.h" />
     <ClInclude Include="events.h" />
+    <ClInclude Include="twitter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
