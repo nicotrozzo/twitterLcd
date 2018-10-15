@@ -13,8 +13,8 @@ using namespace std;
 class twLcd
 {
 public:
-	twLcd(basicLCD * dispPointer, unsigned char totalTwits_, string& userName_);
-	void startShowing(vector<twit> list_);
+	twLcd(basicLCD * dispPointer, string& userName_);
+	void startShowing(vector<twit> list_, size_t totalTwits_);
 	void showNextTwit();
 	void showAgain();
 	void showPreviousTwit();
@@ -22,6 +22,7 @@ public:
 	void decSpeed();
 	bool update();
 	void closeLcd();
+	void printError(const char*message);
 	~twLcd();
 private:
 	unsigned char tickCount;
@@ -33,7 +34,7 @@ private:
 	vector<twit> list;
 	unsigned int twitIndex;
 	size_t offsetString;
-	unsigned char totalTwits;
+	size_t totalTwits;
 	bool showingTwits;
 	char loadingChars[4];
 	void showTwit();

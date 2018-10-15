@@ -5,12 +5,11 @@
 #define DEFAULT_SPEED 3
 #define MAX_LINE_SIZE	16
 
-twLcd::twLcd(basicLCD* dispPointer, unsigned char totalTwits_, string& userName_) : loadingChars({ '-','/','|','\\' })
+twLcd::twLcd(basicLCD* dispPointer,  string& userName_) : loadingChars{ '-','/','|','\\' }
 {
 	currentSpeed = DEFAULT_SPEED;
 	tickCount = 0;
 	twitIndex = 0;
-	totalTwits = totalTwits_;
 	userName = userName_;
 	showingTwits = false; //empieza mostrando una secuencia de caracteres en pantalla para indicar que el programa no se colgo, mas adelante mostrara los twits
 	lcd = dispPointer;
@@ -32,8 +31,9 @@ void twLcd::initDisplay()
 	update();
 }
 
-void twLcd::startShowing(vector<twit> list_)
+void twLcd::startShowing(vector<twit> list_, size_t totalTwits_)
 {
+	totalTwits = totalTwits_;
 	list = list_;
 	twitIndex = 0;
 	tickCount = 0;
@@ -154,7 +154,7 @@ void twLcd::parseText()
 {
 	for (unsigned char i = 0; i < totalTwits; i++)
 	{
-		for (unsigned char j = 0; j < list[i].text.size; j++)
+		for (unsigned char j = 0; j < list[i].text.size(); j++)
 		{
 			switch (list[i].text[j])
 			{
@@ -225,23 +225,43 @@ void twLcd::parseText()
 
 void twLcd::parseData()
 {
-	tm data = {};				
-	stringstream str(list.data);
-	for (int i = 0; i < list.data.size(); i++)
+	tm data = {};	
+	size_t eraseFrom;
+	for (int i = 0; i < list.size(); i++)
 	{
-		if (list.data[i] == '+')
+		eraseFrom = list[i].data.find("+0000");
+		list[i].data.erase(eraseFrom,eraseFrom+strlen("+0000 "));	//saca la zona horaria
+		stringstream str(list[i].data);
+		str >> get_time(&data, "%a %b %d %H:%M:%S %Y");
+		if (data.tm_mday < 10)	//pone la fecha y hora en el formato pedido
 		{
-			while (list.data[i] != ' ')
-			{
-				list.data.erase(i);					//borro la zona horaria del string
-				i++;
-			}
-			list.data.erase(i);						//borro el espacio siguiente
+			list[i].data = '0';
 		}
+		else
+		{
+			list[i].data = "";
+		}
+		list[i].data += to_string(data.tm_mday);
+		list[i].data += '/';
+		if (data.tm_mon < 9)
+		{
+			list[i].data += '0';
+		}
+		list[i].data += to_string(data.tm_mon+1) + '/' + to_string(data.tm_year + 1900).substr(2, 4) + " - ";
+		if (data.tm_hour < 10)
+		{
+			list[i].data += '0';
+		}
+		list[i].data += to_string(data.tm_hour) + ':';
+		if (data.tm_min < 10)
+		{
+			list[i].data += '0';
+		}
+		list[i].data += to_string(data.tm_min);
 	}
-	str >> get_time(&data, "%a %b %d %H:%M:%S %Y");
-	char * d, *m, *y, *h, *min;
-	itoa(data.tm_mday, d, 10);
+
+	
+	/*itoa(data.tm_mday, d, 10);
 	itoa(data.tm_mon+1, m, 10);
 	itoa(data.tm_year + 1900, y, 10);				//en la estructura tm el año devuelve a partir del 1900
 	itoa(data.tm_hour, h, 10);
@@ -264,7 +284,13 @@ void twLcd::parseData()
 	{
 		minute = '0' + minute;
 	}
-	list.data = day + '/' + month + '/' + year + " - " + hour + ':' + minute;
+	list.data = day + '/' + month + '/' + year + " - " + hour + ':' + minute;*/
+}
+
+void twLcd::printError(const char*message)
+{
+	lcd->lcdSetCursorPosition({ 2,1 });
+	*lcd << message;
 }
 
 twLcd::~twLcd()
