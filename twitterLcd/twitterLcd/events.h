@@ -23,7 +23,7 @@ public:
 	event_k getKeyEvent();
 	bool dispatcher(twLcd& lcdManager);
 private:
-	void fsmCycle(const event_k evento, void *userData);
+	//void fsmCycle(const event_k evento, void *userData);
 	int key;		
 	eventType evento;
 	event_k keyEvent;
@@ -34,6 +34,6 @@ private:
 	int getKey();
 };
 
-void noAction(void*);
+//void noAction(void*);
 
 
