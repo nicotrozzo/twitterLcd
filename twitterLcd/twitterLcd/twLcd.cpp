@@ -247,8 +247,8 @@ void twLcd::parseData()
 		{
 			list[i].data += '0';
 		}
-		list[i].data += to_string(data.tm_mon + 1) + '/' + to_string(data.tm_year + 1900).substr(2, 4) + " - ";
-		if (data.tm_hour < 10)
+		list[i].data += to_string(data.tm_mon + 1) + '/' + to_string(data.tm_year + 1900).substr(2, 4) + " - ";	//en la estructura tm el año devuelve a partir del 1900
+		if (data.tm_hour < 10)																					//ya que en la estructura se guarda el mes del 0 al 11
 		{
 			list[i].data += '0';
 		}
